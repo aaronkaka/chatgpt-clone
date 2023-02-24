@@ -57,10 +57,19 @@ const ChatView = () => {
     const BASE_URL = 'http://localhost:3001/'
     const PATH = aiModel !== options[6] ? 'davinci' : 'dalle'
     const POST_URL = BASE_URL + PATH
-    const summarySource = SummarySource()
-    const summarySourcePrompt =  summarySource + ' SUMMARY: """ ' + newMsg + ' """ '
+    let useCasePrompt = newMsg
 
-    let useCasePrompt = aiModel !== options[6] ? summarySourcePrompt : newMsg
+    switch (aiModel) {
+      case options[1]:
+        console.log(`${aiModel} selected`)
+        const summarySource = SummarySource()
+        const summarySourcePrompt =  summarySource + ' SUMMARY: """ ' + newMsg + ' """ '
+        useCasePrompt = summarySourcePrompt
+        break;
+      default:
+        console.log('A valid use case selection must be made!')
+    }
+
     console.log('Generated prompt: ', useCasePrompt)
     //setSummaryHistory(summaryHistory + newMsg)
     //console.log(summaryHistory)
