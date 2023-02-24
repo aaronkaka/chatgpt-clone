@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from 'react'
 import ChatMessage from './ChatMessage'
 import { ChatContext } from '../context/chatContext'
 import Thinking from './Thinking'
+import SummarySource from './SummarySource'
 
 /**
  * A chat view component that displays a list of messages and a form for sending new messages.
@@ -11,9 +12,10 @@ const ChatView = () => {
   const inputRef = useRef()
   const [formValue, setFormValue] = useState('')
   const [thinking, setThinking] = useState(false)
-  const options = ['ChatGPT', 'DALL·E']
+  const options = ['ChatGPT', 'Explain it back', 'Second Bite at the Apple', 'use case 3', 'use case 4', 'use case 5', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
+  // const [summaryHistory, setSummaryHistory] = useState('')
 
   /**
    * Scrolls the chat area to the bottom.
@@ -53,8 +55,15 @@ const ChatView = () => {
     const aiModel = selected
 
     const BASE_URL = 'http://localhost:3001/'
-    const PATH = aiModel === options[0] ? 'davinci' : 'dalle'
+    const PATH = aiModel !== options[6] ? 'davinci' : 'dalle'
     const POST_URL = BASE_URL + PATH
+    const summarySource = SummarySource()
+    const summarySourcePrompt =  summarySource + ' SUMMARY: """ ' + newMsg + ' """ '
+
+    let useCasePrompt = aiModel !== options[6] ? summarySourcePrompt : newMsg
+    console.log('Generated prompt: ', useCasePrompt)
+    //setSummaryHistory(summaryHistory + newMsg)
+    //console.log(summaryHistory)
 
     setThinking(true)
     setFormValue('')
@@ -66,7 +75,7 @@ const ChatView = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        prompt: newMsg,
+        prompt: useCasePrompt,
       })
     })
 
@@ -119,6 +128,11 @@ const ChatView = () => {
         <select value={selected} onChange={(e) => setSelected(e.target.value)} className="dropdown" >
           <option>{options[0]}</option>
           <option>{options[1]}</option>
+          <option>{options[2]}</option>
+          <option>{options[3]}</option>
+          <option>{options[4]}</option>
+          <option>{options[5]}</option>
+          <option>{options[6]}</option>
         </select>
         <textarea ref={inputRef} className='chatview__textarea-message' value={formValue} onChange={(e) => setFormValue(e.target.value)} />
         <button type="submit" className='chatview__btn-send' disabled={!formValue}>Send</button>

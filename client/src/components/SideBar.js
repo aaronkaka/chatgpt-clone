@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react'
+// eslint-disable-next-line
 import { MdClose, MdMenu, MdAdd, MdOutlineLogout, MdOutlineQuestionAnswer } from 'react-icons/md'
 import { ChatContext } from '../context/chatContext'
 import bot from '../assets/bot.ico'
@@ -17,10 +18,10 @@ const SideBar = () => {
    * Toggles the dark mode.
    */
   const clearChat = () => clearMessages()
-  const SignOut = () => {
-    clearChat()
-    window.sessionStorage.clear()
-  }
+  // const SignOut = () => {
+  //   clearChat()
+  //   window.sessionStorage.clear()
+  // }
 
   return (
     <section className={` ${open ? "w-72" : "w-20 "} sidebar`}>
@@ -44,10 +45,17 @@ const SideBar = () => {
           <h1 className={`${!open && "hidden"}`}>New chat</h1>
         </span>
       </div>
+      <div className="nav">
+        <span className='nav__item  bg-light-white'>
+          <div className='nav__icons'>
+            Directions go here.
+          </div>
+        </span>
+      </div>
 
       <div className="nav__bottom">
         <DarkMode open={open} />
-        <div className="nav">
+        {/* <div className="nav">
           <a href='https://github.com/EyuCoder/chatgpt-clone' className="nav__item">
             <div className="nav__icons">
               <MdOutlineQuestionAnswer />
@@ -62,7 +70,7 @@ const SideBar = () => {
             </div>
             <h1 className={`${!open && "hidden"}`}>Log out</h1>
           </span>
-        </div>
+        </div> */}
       </div>
     </section >
   )
