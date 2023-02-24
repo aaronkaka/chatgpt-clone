@@ -61,7 +61,7 @@ const ChatView = () => {
 
     switch (aiModel) {
       case options[1]:
-        console.log(`${aiModel} selected`)
+        console.log(`Use case selected: ${aiModel}`)
         const summarySource = SummarySource()
         const summarySourcePrompt =  summarySource + ' SUMMARY: """ ' + newMsg + ' """ '
         useCasePrompt = summarySourcePrompt
@@ -70,7 +70,7 @@ const ChatView = () => {
         console.log('A valid use case selection must be made!')
     }
 
-    console.log('Generated prompt: ', useCasePrompt)
+    console.log(useCasePrompt)
     //setSummaryHistory(summaryHistory + newMsg)
     //console.log(summaryHistory)
 

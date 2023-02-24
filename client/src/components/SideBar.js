@@ -4,6 +4,7 @@ import { MdClose, MdMenu, MdAdd, MdOutlineLogout, MdOutlineQuestionAnswer } from
 import { ChatContext } from '../context/chatContext'
 import bot from '../assets/bot.ico'
 import DarkMode from './DarkMode'
+import SummarySource from './SummarySource'
 
 /**
  * A sidebar component that displays a list of nav items and a toggle 
@@ -45,10 +46,12 @@ const SideBar = () => {
           <h1 className={`${!open && "hidden"}`}>New chat</h1>
         </span>
       </div>
+            <br/><br/><br/><br/><br/>
+
       <div className="nav">
-        <span className='nav__item  bg-light-white'>
-          <div className='nav__icons'>
-            Directions go here.
+        <span>
+          <div className='text-xs text-sky-400'>
+          {SummarySource().slice(260, 1000) + '...'}
           </div>
         </span>
       </div>
