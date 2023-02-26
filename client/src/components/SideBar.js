@@ -51,7 +51,7 @@ const SideBar = () => {
       <div className="nav">
         <span>
           <div className='text-xs text-sky-400'>
-          {SummarySource().slice(260, 1000) + '...'}
+          {SummarySource().sourceText.slice(0, 900) + '...'}
           </div>
         </span>
       </div>

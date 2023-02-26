@@ -62,12 +62,12 @@ const ChatView = () => {
     switch (aiModel) {
       case options[1]:
         console.log(`Use case selected: ${aiModel}`)
-        const summarySource = SummarySource()
-        const summarySourcePrompt =  summarySource + ' SUMMARY: """ ' + newMsg + ' """ '
+        const summarySource = SummarySource().prompt + SummarySource().sourceText
+        const summarySourcePrompt =  summarySource + '""" SUMMARY: """ ' + newMsg + ' """ '
         useCasePrompt = summarySourcePrompt
         break;
       default:
-        console.log('A valid use case selection must be made!')
+        console.error('A valid use case selection must be made!')
     }
 
     console.log(useCasePrompt)
