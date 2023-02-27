@@ -12,10 +12,10 @@ const ChatView = () => {
   const inputRef = useRef()
   const [formValue, setFormValue] = useState('')
   const [thinking, setThinking] = useState(false)
-  const options = ['ChatGPT', 'Explain it back', 'Second Bite at the Apple', 'use case 3', 'use case 4', 'use case 5', 'DALL·E']
+  const options = ['ChatGPT', 'Explain it back', 'Another Bite at the Apple', 'use case 3', 'use case 4', 'use case 5', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
-  // const [summaryHistory, setSummaryHistory] = useState('')
+  const [summaryHistory, setSummaryHistory] = useState('')
 
   /**
    * Scrolls the chat area to the bottom.
@@ -57,22 +57,26 @@ const ChatView = () => {
     const BASE_URL = 'http://localhost:3001/'
     const PATH = aiModel !== options[6] ? 'davinci' : 'dalle'
     const POST_URL = BASE_URL + PATH
-    let useCasePrompt = newMsg
+    const summarySource = SummarySource().prompt + SummarySource().sourceText
+
+    let useCasePrompt = newMsg // default is current user input
 
     switch (aiModel) {
       case options[1]:
-        console.log(`Use case selected: ${aiModel}`)
-        const summarySource = SummarySource().prompt + SummarySource().sourceText
-        const summarySourcePrompt =  summarySource + '""" SUMMARY: """ ' + newMsg + ' """ '
+        const summarySourcePrompt =  summarySource + '\n"""\n\nSUMMARY:\n"""\n' + newMsg + '\n"""\n'
+        setSummaryHistory(summarySourcePrompt)
         useCasePrompt = summarySourcePrompt
+        break;
+      case options[2]:
+        if (!summaryHistory) console.error('You must revise an existing summary.')
+        const revisedSummaryPrompt = summaryHistory + '\nREVISED SUMMARY:\n"""\n' + newMsg + '\n"""\n\nIs the REVISED SUMMARY better? Why?\n'
+        setSummaryHistory(revisedSummaryPrompt)
+        useCasePrompt = revisedSummaryPrompt
         break;
       default:
         console.error('A valid use case selection must be made!')
     }
-
     console.log(useCasePrompt)
-    //setSummaryHistory(summaryHistory + newMsg)
-    //console.log(summaryHistory)
 
     setThinking(true)
     setFormValue('')
@@ -94,6 +98,7 @@ const ChatView = () => {
     if (response.ok) {
       // The request was successful
       data.bot && updateMessage(data.bot, true, aiModel)
+
     } else if (response.status === 429) {
       setThinking(false)
     } else {
