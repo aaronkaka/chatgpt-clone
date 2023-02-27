@@ -25,7 +25,7 @@ const SideBar = () => {
   // }
 
   return (
-    <section className={` ${open ? "w-72" : "w-20 "} sidebar`}>
+    <section className={` ${open ? "w-73" : "w-20 "} sidebar`}>
       <div className="sidebar__app-bar">
         <div className={`sidebar__app-logo ${!open && "scale-0 hidden"}`}>
           <span className='w-8 h-8'><img src={bot} alt="" /></span>
@@ -46,12 +46,11 @@ const SideBar = () => {
           <h1 className={`${!open && "hidden"}`}>New chat</h1>
         </span>
       </div>
-            <br/><br/><br/><br/><br/>
 
       <div className="nav">
         <span>
           <div className='text-xs text-sky-400'>
-          {SummarySource().sourceText.slice(0, 900) + '...'}
+          {open && SummarySource().sourceText.length < 5001 && SummarySource().sourceText.slice(0, 5000)}
           </div>
         </span>
       </div>
