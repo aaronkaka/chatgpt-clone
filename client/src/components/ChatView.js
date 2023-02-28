@@ -89,6 +89,8 @@ const ChatView = () => {
       },
       body: JSON.stringify({
         prompt: useCasePrompt,
+        max_tokens: 200,
+        temperature: 0
       })
     })
 
