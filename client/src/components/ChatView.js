@@ -15,6 +15,7 @@ const ChatView = () => {
   const options = ['ChatGPT', 'Explain it back', 'Another Bite at the Apple', 'use case 3', 'use case 4', 'use case 5', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
+  const summarySource = SummarySource().prompt + SummarySource().sourceText
   const [summaryHistory, setSummaryHistory] = useState('')
 
   /**
@@ -57,7 +58,6 @@ const ChatView = () => {
     const BASE_URL = 'http://localhost:3001/'
     const PATH = aiModel !== options[6] ? 'davinci' : 'dalle'
     const POST_URL = BASE_URL + PATH
-    const summarySource = SummarySource().prompt + SummarySource().sourceText
 
     let useCasePrompt = newMsg // default is current user input
 
@@ -76,7 +76,7 @@ const ChatView = () => {
       default:
         console.error('A valid use case selection must be made!')
     }
-    console.log(useCasePrompt)
+    console.log('Use case prompt: ' + useCasePrompt)
 
     setThinking(true)
     setFormValue('')
@@ -98,6 +98,7 @@ const ChatView = () => {
     if (response.ok) {
       // The request was successful
       data.bot && updateMessage(data.bot, true, aiModel)
+      setSummaryHistory(useCasePrompt + '\n' + data.bot + '\n')
 
     } else if (response.status === 429) {
       setThinking(false)
