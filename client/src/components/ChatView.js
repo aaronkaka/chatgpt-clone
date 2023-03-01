@@ -3,6 +3,7 @@ import ChatMessage from './ChatMessage'
 import { ChatContext } from '../context/chatContext'
 import Thinking from './Thinking'
 import SummarySource from './SummarySource'
+import DiveDeeperSource from './DiveDeeperSource'
 
 /**
  * A chat view component that displays a list of messages and a form for sending new messages.
@@ -12,11 +13,13 @@ const ChatView = () => {
   const inputRef = useRef()
   const [formValue, setFormValue] = useState('')
   const [thinking, setThinking] = useState(false)
-  const options = ['ChatGPT', 'Explain it back', 'Another Bite at the Apple', 'use case 3', 'use case 4', 'use case 5', 'DALL·E']
+  const options = ['ChatGPT', 'Explain it back', 'Another Bite at the Apple', 'use case 3', 'use case 4', 'Tell Me More', 'Dive Deeper', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
   const summarySource = SummarySource().prompt + SummarySource().sourceText
   const [summaryHistory, setSummaryHistory] = useState('')
+  const diveDeeperSource = DiveDeeperSource().prompt + DiveDeeperSource().sourceText + '\n"""'
+  const [diveDeeperHistory, setDiveDeeperHistory] = useState('')
 
   /**
    * Scrolls the chat area to the bottom.
@@ -56,14 +59,14 @@ const ChatView = () => {
     const aiModel = selected
 
     const BASE_URL = 'http://localhost:3001/'
-    const PATH = aiModel !== options[6] ? 'davinci' : 'dalle'
+    const PATH = aiModel !== options[7] ? 'davinci' : 'dalle'
     const POST_URL = BASE_URL + PATH
 
     let useCasePrompt = newMsg // default is current user input
 
     switch (aiModel) {
       case options[1]:
-        const summarySourcePrompt =  summarySource + '\n"""\n\nSUMMARY:\n"""\n' + newMsg + '\n"""\n'
+        const summarySourcePrompt = summarySource + '\n"""\n\nSUMMARY:\n"""\n' + newMsg + '\n"""\n'
         setSummaryHistory(summarySourcePrompt)
         useCasePrompt = summarySourcePrompt
         break;
@@ -73,10 +76,20 @@ const ChatView = () => {
         setSummaryHistory(revisedSummaryPrompt)
         useCasePrompt = revisedSummaryPrompt
         break;
+      case options[5]:
+        const divePrompt = diveDeeperSource + '\n\n' + newMsg + '\n\n'
+        setDiveDeeperHistory(divePrompt)
+        useCasePrompt = divePrompt
+        break;
+      case options[6]:
+        const diveDeeperPrompt = diveDeeperHistory + '\n\n' + newMsg + '\n\n'
+        setDiveDeeperHistory(diveDeeperPrompt)
+        useCasePrompt = diveDeeperPrompt
+        break;
       default:
         console.error('A valid use case selection must be made!')
     }
-    console.log('Use case prompt: ' + useCasePrompt)
+    console.log('*** USE CASE PROMPT: \n' + useCasePrompt)
 
     setThinking(true)
     setFormValue('')
@@ -100,7 +113,19 @@ const ChatView = () => {
     if (response.ok) {
       // The request was successful
       data.bot && updateMessage(data.bot, true, aiModel)
-      setSummaryHistory(useCasePrompt + '\n' + data.bot + '\n')
+
+      switch (aiModel) {
+        case options[1]:
+        case options[2]:
+          setSummaryHistory(useCasePrompt + '\n' + data.bot + '\n')
+          break;
+        case options[5]:
+        case options[6]:
+          setDiveDeeperHistory(useCasePrompt + data.bot)
+          break;
+        default:
+          console.error('A valid use case selection must be made!')
+      }
 
     } else if (response.status === 429) {
       setThinking(false)
