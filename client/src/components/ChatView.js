@@ -84,7 +84,7 @@ const ChatView = () => {
         useCasePrompt = revisedSummaryPrompt
         break;
       case options[3]:
-        const primarySecondaryPrompt = primarySecondarySource + newMsg
+        const primarySecondaryPrompt = primarySecondarySource + '\n"""\n\nANSWER:\n"""\n' + newMsg + '\n"""\n\nEvaluate the ANSWER to the question and, if necessary, suggest ways to improve it.'
         useCasePrompt = primarySecondaryPrompt
         break;
       case options[5]:
