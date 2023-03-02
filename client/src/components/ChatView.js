@@ -136,7 +136,7 @@ const ChatView = () => {
           setDiveDeeperHistory(useCasePrompt + data.bot)
           break;
         default:
-          console.error('A valid use case selection must be made!')
+          console.warn('No response added to chat history.')
       }
 
     } else if (response.status === 429) {
