@@ -4,6 +4,7 @@ import { ChatContext } from '../context/chatContext'
 import Thinking from './Thinking'
 import SummarySource from './SummarySource'
 import DiveDeeperSource from './DiveDeeperSource'
+import PrimarySecondarySource from './PrimarySecondarySource'
 
 /**
  * A chat view component that displays a list of messages and a form for sending new messages.
@@ -13,13 +14,19 @@ const ChatView = () => {
   const inputRef = useRef()
   const [formValue, setFormValue] = useState('')
   const [thinking, setThinking] = useState(false)
-  const options = ['ChatGPT', 'Explain it back', 'Another Bite at the Apple', 'use case 3', 'use case 4', 'Tell Me More', 'Dive Deeper', 'DALL·E']
+
+  const MAX_REQUEST = 4000
+  const MAX_TOKENS = 200
+  const TEMPERATURE = 0
+  const DIVE_DEEPER_PREFIX = 3600
+  const options = ['ChatGPT', 'Explain it back', 'Another Bite at the Apple', 'Check Your Sources', 'use case 4', 'Tell Me More', 'Dive Deeper', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
   const summarySource = SummarySource().prompt + SummarySource().sourceText
   const [summaryHistory, setSummaryHistory] = useState('')
   const diveDeeperSource = DiveDeeperSource().prompt + DiveDeeperSource().sourceText + '\n"""'
   const [diveDeeperHistory, setDiveDeeperHistory] = useState('')
+  const primarySecondarySource = PrimarySecondarySource().prompt + PrimarySecondarySource().sourceText
 
   /**
    * Scrolls the chat area to the bottom.
@@ -76,6 +83,10 @@ const ChatView = () => {
         setSummaryHistory(revisedSummaryPrompt)
         useCasePrompt = revisedSummaryPrompt
         break;
+      case options[3]:
+        const primarySecondaryPrompt = primarySecondarySource + newMsg
+        useCasePrompt = primarySecondaryPrompt
+        break;
       case options[5]:
         const divePrompt = diveDeeperSource + '\n\n' + newMsg + '\n\n'
         setDiveDeeperHistory(divePrompt)
@@ -83,13 +94,14 @@ const ChatView = () => {
         break;
       case options[6]:
         const diveDeeperPrompt = diveDeeperHistory + '\n\n' + newMsg + '\n\n'
-        setDiveDeeperHistory(diveDeeperPrompt)
-        useCasePrompt = diveDeeperPrompt
+        const diveDeeperPromptConstrained = diveDeeperPrompt.slice(0, DIVE_DEEPER_PREFIX) + '\n\n' + diveDeeperPrompt.slice(4 - (MAX_REQUEST - DIVE_DEEPER_PREFIX))
+        setDiveDeeperHistory(diveDeeperPromptConstrained)
+        useCasePrompt = diveDeeperPromptConstrained
         break;
       default:
         console.error('A valid use case selection must be made!')
     }
-    console.log('*** USE CASE PROMPT: \n' + useCasePrompt)
+    console.log(`*** Context Length: ${useCasePrompt.length} \n` + useCasePrompt)
 
     setThinking(true)
     setFormValue('')
@@ -102,8 +114,8 @@ const ChatView = () => {
       },
       body: JSON.stringify({
         prompt: useCasePrompt,
-        max_tokens: 200,
-        temperature: 0
+        max_tokens: MAX_TOKENS,
+        temperature: TEMPERATURE
       })
     })
 
@@ -175,6 +187,7 @@ const ChatView = () => {
           <option>{options[4]}</option>
           <option>{options[5]}</option>
           <option>{options[6]}</option>
+          <option>{options[7]}</option>
         </select>
         <textarea ref={inputRef} className='chatview__textarea-message' value={formValue} onChange={(e) => setFormValue(e.target.value)} />
         <button type="submit" className='chatview__btn-send' disabled={!formValue}>Send</button>
