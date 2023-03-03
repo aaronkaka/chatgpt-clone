@@ -110,6 +110,9 @@ const ChatView = () => {
         setDiveDeeperHistory(diveDeeperPromptConstrained)
         useCasePrompt = diveDeeperPromptConstrained
         break;
+      case options[7]:
+        console.warn('You have selected DALL-E, a model that can generate and edit images given a natural language prompt.')
+        break;
       default:
         console.error('A valid use case selection must be made.')
     }
