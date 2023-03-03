@@ -5,6 +5,7 @@ import Thinking from './Thinking'
 import SummarySource from './SummarySource'
 import DiveDeeperSource from './DiveDeeperSource'
 import PrimarySecondarySource from './PrimarySecondarySource'
+import QuizSource from './QuizSource'
 
 /**
  * A chat view component that displays a list of messages and a form for sending new messages.
@@ -19,7 +20,7 @@ const ChatView = () => {
   const MAX_TOKENS = 200
   const TEMPERATURE = 0
   const DIVE_DEEPER_PREFIX = 3600
-  const options = ['ChatGPT', 'Explain it back', 'Another Bite at the Apple', 'Check Your Sources', 'use case 4', 'Tell Me More', 'Dive Deeper', 'DALL·E']
+  const options = ['Explain it back', 'Another Bite at the Apple', 'Check Your Sources', 'Quiz Generator', 'Quiz Me', 'Tell Me More', 'Dive Deeper', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
   const summarySource = SummarySource().prompt + SummarySource().sourceText
@@ -27,6 +28,8 @@ const ChatView = () => {
   const diveDeeperSource = DiveDeeperSource().prompt + DiveDeeperSource().sourceText + '\n"""'
   const [diveDeeperHistory, setDiveDeeperHistory] = useState('')
   const primarySecondarySource = PrimarySecondarySource().prompt + PrimarySecondarySource().sourceText
+  const [quizHistory, setQuizHistory] = useState('')
+  const quizSource = QuizSource().prompt + QuizSource().sourceText
 
   /**
    * Scrolls the chat area to the bottom.
@@ -72,20 +75,29 @@ const ChatView = () => {
     let useCasePrompt = newMsg // default is current user input
 
     switch (aiModel) {
-      case options[1]:
+      case options[0]:
         const summarySourcePrompt = summarySource + '\n"""\n\nSUMMARY:\n"""\n' + newMsg + '\n"""\n'
         setSummaryHistory(summarySourcePrompt)
         useCasePrompt = summarySourcePrompt
         break;
-      case options[2]:
+      case options[1]:
         if (!summaryHistory) console.error('You must revise an existing summary.')
         const revisedSummaryPrompt = summaryHistory + '\nREVISED SUMMARY:\n"""\n' + newMsg + '\n"""\n\nIs the REVISED SUMMARY better? Why?\n'
         setSummaryHistory(revisedSummaryPrompt)
         useCasePrompt = revisedSummaryPrompt
         break;
-      case options[3]:
+      case options[2]:
         const primarySecondaryPrompt = primarySecondarySource + '\n"""\n\nANSWER:\n"""\n' + newMsg + '\n"""\n\nEvaluate the ANSWER to the question and, if necessary, suggest ways to improve it.'
         useCasePrompt = primarySecondaryPrompt
+        break;
+      case options[3]:
+        const quizGeneratorPrompt = quizSource + '\n"""\n\nGenerate three questions about the text. The questions should address key ideas and not insignificant details.'
+        setQuizHistory(quizGeneratorPrompt)
+        useCasePrompt = quizGeneratorPrompt
+        break;
+      case options[4]:
+        const quizMePrompt = quizHistory + '\n\nANSWERS:\n"""' + newMsg + '\n"""\n\nEvaluate each of the three ANSWERS and explain whether it answers the questions above. If an answer is incorrect or incomplete, quote the passage from the text that provides a more correct, complete answer.'
+        useCasePrompt = quizMePrompt
         break;
       case options[5]:
         const divePrompt = diveDeeperSource + '\n\n' + newMsg + '\n\n'
@@ -99,7 +111,7 @@ const ChatView = () => {
         useCasePrompt = diveDeeperPromptConstrained
         break;
       default:
-        console.error('A valid use case selection must be made!')
+        console.error('A valid use case selection must be made.')
     }
     console.log(`*** Context Length: ${useCasePrompt.length} \n` + useCasePrompt)
 
@@ -127,9 +139,12 @@ const ChatView = () => {
       data.bot && updateMessage(data.bot, true, aiModel)
 
       switch (aiModel) {
+        case options[0]:
         case options[1]:
-        case options[2]:
           setSummaryHistory(useCasePrompt + '\n' + data.bot + '\n')
+          break;
+        case options[3]:
+          setQuizHistory(useCasePrompt + '\n' + data.bot + '\n')
           break;
         case options[5]:
         case options[6]:
