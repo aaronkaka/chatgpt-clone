@@ -111,12 +111,12 @@ const ChatView = () => {
         useCasePrompt = diveDeeperPromptConstrained
         break;
       case options[7]:
-        console.warn('You have selected DALL-E, a model that can generate and edit images given a natural language prompt.')
+        //console.clear()
         break;
       default:
         console.error('A valid use case selection must be made.')
     }
-    console.log(`*** Context Length: ${useCasePrompt.length} \n` + useCasePrompt)
+    console.warn(`*** Context Length: ${useCasePrompt.length} \n` + useCasePrompt)
 
     setThinking(true)
     setFormValue('')
@@ -136,7 +136,7 @@ const ChatView = () => {
 
     const data = await response.json()
 
-    console.log(response.status)
+    console.warn(response.status)
     if (response.ok) {
       // The request was successful
       data.bot && updateMessage(data.bot, true, aiModel)
@@ -163,7 +163,7 @@ const ChatView = () => {
       // The request failed
       window.alert(`openAI is returning an error: ${response.status + response.statusText} 
       please try again later`)
-      console.log(`Request failed with status code ${response.status}`)
+      console.error(`Request failed with status code ${response.status}`)
       setThinking(false)
     }
 
@@ -184,6 +184,38 @@ const ChatView = () => {
     inputRef.current.focus()
   }, [])
 
+  /**
+   * Upon use case mode selection, log to the browser dev tools console.
+   */
+  const handleLog = (selectionValue) => {
+    console.info('*** ' + selectionValue)
+
+    switch (selectionValue) {
+      case options[0]:
+        console.clear()
+        console.info(summarySource)
+        break;
+      case options[2]:
+        console.clear()
+        console.info(primarySecondarySource)
+        break;
+      case options[3]:
+        console.clear()
+        console.info(quizSource)
+        break;
+      case options[5]:
+        console.clear()
+        console.info(diveDeeperSource)
+        break;
+      case options[7]:
+        console.clear()
+        console.info('You have selected DALL·E, a model that can generate and edit images given a natural language prompt.')
+        break;
+      default:
+        console.warn('No response added to chat history.')
+    }
+  }
+
   return (
     <div className="chatview">
       <main className='chatview__chatarea'>
@@ -197,7 +229,7 @@ const ChatView = () => {
         <span ref={messagesEndRef}></span>
       </main>
       <form className='form' onSubmit={sendMessage}>
-        <select value={selected} onChange={(e) => setSelected(e.target.value)} className="dropdown" >
+        <select value={selected} onChange={(e) => {handleLog(e.target.value); setSelected(e.target.value)}} className="dropdown" >
           <option>{options[0]}</option>
           <option>{options[1]}</option>
           <option>{options[2]}</option>
