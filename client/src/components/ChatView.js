@@ -106,7 +106,7 @@ const ChatView = () => {
         break;
       case options[6]:
         const diveDeeperPrompt = diveDeeperHistory + '\n\n' + newMsg + '\n\n'
-        const diveDeeperPromptConstrained = diveDeeperPrompt.slice(0, DIVE_DEEPER_PREFIX) + '\n\n' + diveDeeperPrompt.slice(4 - (MAX_REQUEST - DIVE_DEEPER_PREFIX))
+        const diveDeeperPromptConstrained = diveDeeperPrompt.slice(0, DIVE_DEEPER_PREFIX) + '\n\n' + diveDeeperPrompt.slice(2 - (MAX_REQUEST - DIVE_DEEPER_PREFIX))
         setDiveDeeperHistory(diveDeeperPromptConstrained)
         useCasePrompt = diveDeeperPromptConstrained
         break;
@@ -196,20 +196,23 @@ const ChatView = () => {
         console.info(summarySource)
         break;
       case options[2]:
+        updateMessage(`Does the Primary source extend, complicate, or contradict the account in the Secondary source? How?`, true)
         console.clear()
         console.info(primarySecondarySource)
         break;
       case options[3]:
+        updateMessage(`Please answer the questions I generate for you about the source text. `, true)
         console.clear()
         console.info(quizSource)
         break;
       case options[5]:
+        updateMessage(`Let’s dive deeper into the material. Please ask me questions about the text you just read.`, true)
         console.clear()
         console.info(diveDeeperSource)
         break;
       case options[7]:
+        updateMessage(`You have selected DALL·E, a model that can generate and edit images given a natural language prompt.`, true)
         console.clear()
-        console.info('You have selected DALL·E, a model that can generate and edit images given a natural language prompt.')
         break;
       default:
         console.warn('No response added to chat history.')
