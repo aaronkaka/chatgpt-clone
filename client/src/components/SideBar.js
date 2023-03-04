@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 // eslint-disable-next-line
 import { MdClose, MdMenu, MdAdd, MdOutlineLogout, MdOutlineQuestionAnswer } from 'react-icons/md'
 import { ChatContext } from '../context/chatContext'
-import bot from '../assets/bot.ico'
+import bot from '../assets/Logo_Horizontal.png'
 import DarkMode from './DarkMode'
 import SummarySource from './SummarySource'
 
@@ -28,7 +28,7 @@ const SideBar = () => {
     <section className={` ${open ? "w-73" : "w-20 "} sidebar`}>
       <div className="sidebar__app-bar">
         <div className={`sidebar__app-logo ${!open && "scale-0 hidden"}`}>
-          <span className='w-8 h-8'><img src={bot} alt="" /></span>
+          <span className='w-8 h-8'><img src={bot} alt="" width="60" /></span>
         </div>
         <h1 className={`sidebar__app-title ${!open && "scale-0 hidden"}`}>
           Source Content
