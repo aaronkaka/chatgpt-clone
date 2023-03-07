@@ -16,10 +16,8 @@ const ChatView = () => {
   const [formValue, setFormValue] = useState('')
   const [thinking, setThinking] = useState(false)
 
-  const MAX_REQUEST = 4000
   const MAX_TOKENS = 200
   const TEMPERATURE = 0
-  const DIVE_DEEPER_PREFIX = 3600
   const options = ['Explain it back', 'Another Bite at the Apple', 'Check Your Sources', 'Quiz Generator', 'Quiz Me', 'Tell Me More', 'Dive Deeper', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
@@ -106,9 +104,8 @@ const ChatView = () => {
         break;
       case options[6]:
         const diveDeeperPrompt = diveDeeperHistory + '\n\n' + newMsg + '\n\n'
-        const diveDeeperPromptConstrained = diveDeeperPrompt.slice(0, DIVE_DEEPER_PREFIX) + '\n\n' + diveDeeperPrompt.slice(2 - (MAX_REQUEST - DIVE_DEEPER_PREFIX))
-        setDiveDeeperHistory(diveDeeperPromptConstrained)
-        useCasePrompt = diveDeeperPromptConstrained
+        setDiveDeeperHistory(diveDeeperPrompt)
+        useCasePrompt = diveDeeperPrompt
         break;
       case options[7]:
         //console.clear()

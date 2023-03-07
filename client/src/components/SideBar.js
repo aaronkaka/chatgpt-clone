@@ -34,8 +34,7 @@ const SideBar = () => {
           Source Content
         </h1>
         <div className='sidebar__btn-close' onClick={() => setOpen(!open)}>
-          {open ? <MdClose className='sidebar__btn-icon' /> : <MdMenu className='sidebar__btn-icon' />}
-
+          {open ? <MdMenu className='sidebar__btn-icon' /> : <MdClose className='sidebar__btn-icon' />}
         </div>
       </div>
       <div className="nav">
