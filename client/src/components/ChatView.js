@@ -18,7 +18,7 @@ const ChatView = () => {
 
   const MAX_TOKENS = 200
   const TEMPERATURE = 0
-  const options = ['Explain it back', 'Another Bite at the Apple', 'Check Your Sources', 'Quiz Generator', 'Quiz Me', 'Tell Me More', 'Dive Deeper', 'DALL·E']
+  const options = ['Tell Me More', 'Dive Deeper', 'Quiz Generator', 'Quiz Me', 'Explain it back', 'Another Bite at the Apple', 'Check Your Sources', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
   const summarySource = SummarySource().prompt + SummarySource().sourceText
@@ -74,38 +74,38 @@ const ChatView = () => {
 
     switch (aiModel) {
       case options[0]:
+        const divePrompt = diveDeeperSource + '\n\n' + newMsg + '\n\n'
+        setDiveDeeperHistory(divePrompt)
+        useCasePrompt = divePrompt
+        break;
+      case options[1]:
+        const diveDeeperPrompt = diveDeeperHistory + '\n\n' + newMsg + '\n\n'
+        setDiveDeeperHistory(diveDeeperPrompt)
+        useCasePrompt = diveDeeperPrompt
+        break;
+      case options[2]:
+        const quizGeneratorPrompt = quizSource + '\n"""\n\nGenerate three questions about the text. The questions should address key ideas and not insignificant details.'
+        setQuizHistory(quizGeneratorPrompt)
+        useCasePrompt = quizGeneratorPrompt
+        break;
+      case options[3]:
+        const quizMePrompt = quizHistory + '\n\nANSWERS:\n"""' + newMsg + '\n"""\n\nEvaluate each of the three ANSWERS and explain whether it answers the questions above. If an answer is incorrect or incomplete, quote the passage from the text that provides a more correct, complete answer.'
+        useCasePrompt = quizMePrompt
+        break;
+      case options[4]:
         const summarySourcePrompt = summarySource + '\n"""\n\nSUMMARY:\n"""\n' + newMsg + '\n"""\n'
         setSummaryHistory(summarySourcePrompt)
         useCasePrompt = summarySourcePrompt
         break;
-      case options[1]:
+      case options[5]:
         if (!summaryHistory) console.error('You must revise an existing summary.')
         const revisedSummaryPrompt = summaryHistory + '\nREVISED SUMMARY:\n"""\n' + newMsg + '\n"""\n\nIs the REVISED SUMMARY better? Why?\n'
         setSummaryHistory(revisedSummaryPrompt)
         useCasePrompt = revisedSummaryPrompt
         break;
-      case options[2]:
+      case options[6]:
         const primarySecondaryPrompt = primarySecondarySource + '\n"""\n\nANSWER:\n"""\n' + newMsg + '\n"""\n\nEvaluate the ANSWER to the question and, if necessary, suggest ways to improve it.'
         useCasePrompt = primarySecondaryPrompt
-        break;
-      case options[3]:
-        const quizGeneratorPrompt = quizSource + '\n"""\n\nGenerate three questions about the text. The questions should address key ideas and not insignificant details.'
-        setQuizHistory(quizGeneratorPrompt)
-        useCasePrompt = quizGeneratorPrompt
-        break;
-      case options[4]:
-        const quizMePrompt = quizHistory + '\n\nANSWERS:\n"""' + newMsg + '\n"""\n\nEvaluate each of the three ANSWERS and explain whether it answers the questions above. If an answer is incorrect or incomplete, quote the passage from the text that provides a more correct, complete answer.'
-        useCasePrompt = quizMePrompt
-        break;
-      case options[5]:
-        const divePrompt = diveDeeperSource + '\n\n' + newMsg + '\n\n'
-        setDiveDeeperHistory(divePrompt)
-        useCasePrompt = divePrompt
-        break;
-      case options[6]:
-        const diveDeeperPrompt = diveDeeperHistory + '\n\n' + newMsg + '\n\n'
-        setDiveDeeperHistory(diveDeeperPrompt)
-        useCasePrompt = diveDeeperPrompt
         break;
       case options[7]:
         //console.clear()
@@ -141,14 +141,14 @@ const ChatView = () => {
       switch (aiModel) {
         case options[0]:
         case options[1]:
-          setSummaryHistory(useCasePrompt + '\n' + data.bot + '\n')
+          setDiveDeeperHistory(useCasePrompt + data.bot)
           break;
-        case options[3]:
+        case options[2]:
           setQuizHistory(useCasePrompt + '\n' + data.bot + '\n')
           break;
+        case options[4]:
         case options[5]:
-        case options[6]:
-          setDiveDeeperHistory(useCasePrompt + data.bot)
+          setSummaryHistory(useCasePrompt + '\n' + data.bot + '\n')
           break;
         default:
           console.warn('No response added to chat history.')
@@ -189,23 +189,24 @@ const ChatView = () => {
 
     switch (selectionValue) {
       case options[0]:
-        console.clear()
-        console.info(summarySource)
-        break;
-      case options[2]:
-        updateMessage(`Does the Primary source extend, complicate, or contradict the account in the Secondary source? How?`, true)
-        console.clear()
-        console.info(primarySecondarySource)
-        break;
-      case options[3]:
-        updateMessage(`Please answer the questions I generate for you about the source text. `, true)
-        console.clear()
-        console.info(quizSource)
-        break;
-      case options[5]:
         updateMessage(`Let’s dive deeper into the material. Please ask me questions about the text you just read.`, true)
         console.clear()
         console.info(diveDeeperSource)
+        break;
+      case options[2]:
+        updateMessage(`Please answer the questions I generate for you about the source text.`, true)
+        console.clear()
+        console.info(quizSource)
+        break;
+      case options[4]:
+        updateMessage(`Do your best to summarize the source text.`, true)
+        console.clear()
+        console.info(summarySource)
+        break;
+      case options[6]:
+        updateMessage(`Does the Primary source extend, complicate, or contradict the account in the Secondary source? How?`, true)
+        console.clear()
+        console.info(primarySecondarySource)
         break;
       case options[7]:
         updateMessage(`You have selected DALL·E, a model that can generate and edit images given a natural language prompt.`, true)
