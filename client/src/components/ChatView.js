@@ -6,6 +6,7 @@ import SummarySource from './SummarySource'
 import DiveDeeperSource from './DiveDeeperSource'
 import PrimarySecondarySource from './PrimarySecondarySource'
 import QuizSource from './QuizSource'
+import Window from "floating-window-ui"
 
 /**
  * A chat view component that displays a list of messages and a form for sending new messages.
@@ -170,16 +171,16 @@ const ChatView = () => {
   /**
    * Scrolls the chat area to the bottom when the messages array is updated.
    */
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages, thinking])
+  // useEffect(() => {
+  //   scrollToBottom()
+  // }, [messages, thinking])
 
   /**
    * Focuses the TextArea input to when the component is first rendered.
    */
-  useEffect(() => {
-    inputRef.current.focus()
-  }, [])
+  // useEffect(() => {
+  //   inputRef.current.focus()
+  // }, [])
 
   /**
    * Upon use case mode selection, log to the browser dev tools console.
@@ -218,32 +219,19 @@ const ChatView = () => {
   }
 
   return (
-    <div className="chatview">
-      <main className='chatview__chatarea'>
-
-        {messages.map((message, index) => (
-          <ChatMessage key={index} message={{ ...message }} />
-        ))}
-
-        {thinking && <Thinking />}
-
-        <span ref={messagesEndRef}></span>
-      </main>
-      <form className='form' onSubmit={sendMessage}>
-        <select value={selected} onChange={(e) => {handleLog(e.target.value); setSelected(e.target.value)}} className="dropdown" >
-          <option>{options[0]}</option>
-          <option>{options[1]}</option>
-          <option>{options[2]}</option>
-          <option>{options[3]}</option>
-          <option>{options[4]}</option>
-          <option>{options[5]}</option>
-          <option>{options[6]}</option>
-          <option>{options[7]}</option>
-        </select>
-        <textarea ref={inputRef} className='chatview__textarea-message' value={formValue} onChange={(e) => setFormValue(e.target.value)} />
-        <button type="submit" className='chatview__btn-send' disabled={!formValue}>Send</button>
-      </form>
-    </div>
+    <Window
+      id="react-window"
+      height={800}
+      width={400}
+      resizable={true}
+      titleBar={{
+        icon: "⚛",
+        title: "React App Window",
+        buttons: { minimize: true, maximize: true },
+      }}
+    >
+      <div>Hello Andy! When the Constitution was initially drafted, it did not include the Bill of Rights, which is why they are classed as Amendments. The ten amendments were added to satisfy the anti-federalists, who feared that a stronger federal government might duplicate London's perceived infringement of the rights of the colonists. The Constitution itself reflected various comprises, including the most consequential ones surrounding slavery. The southern slaveowning states succeeded in getting more representation via the three-fifths clause, a guarantee of slave importation for at least 20 more years, and a guarantee that fugitive slaves would be returned if they escaped to northern colonies. In 1807, slavery was in fact banned, as it was in Britain. This was due in part to the Haitian Revolution and in part due to the purchase of the Louisiana Territory, which afforded an opportunity for slavery to expand into new areas. However, despite the ban on slave trading that was imposed in 1807, that ban was never fully enforced due to inadequate funding.</div>
+    </Window>
   )
 }
 
