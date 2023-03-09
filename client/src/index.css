@@ -70,12 +70,12 @@
 
   /* CHATVIEW */
   .chatview{
-    @apply h-screen flex-1 p-2 duration-500 overflow-hidden relative bg-slate-200
+    @apply h-full flex-1 p-2 duration-500 overflow-hidden relative bg-slate-200 rounded-xl
   dark:bg-light-grey;
   }
 
   .chatview__chatarea {
-    @apply h-[85vh] w-full overflow-y-scroll flex flex-col m-2 shadow-md;
+    @apply h-4/5 w-full overflow-y-scroll flex flex-col m-2;
   }
   
   .form{

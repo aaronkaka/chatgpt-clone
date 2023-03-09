@@ -230,7 +230,7 @@ const ChatView = () => {
         <span ref={messagesEndRef}></span>
       </main>
       <form className='form' onSubmit={sendMessage}>
-        <select value={selected} onChange={(e) => {handleLog(e.target.value); setSelected(e.target.value)}} className="dropdown" >
+        <select value={selected} onChange={(e) => { handleLog(e.target.value); setSelected(e.target.value) }} className="dropdown" >
           <option>{options[0]}</option>
           <option>{options[1]}</option>
           <option>{options[2]}</option>
@@ -240,7 +240,14 @@ const ChatView = () => {
           <option>{options[6]}</option>
           <option>{options[7]}</option>
         </select>
-        <textarea ref={inputRef} className='chatview__textarea-message' value={formValue} onChange={(e) => setFormValue(e.target.value)} />
+        <textarea ref={inputRef} className='chatview__textarea-message' value={formValue} onKeyPress={(e) => {
+          if (e.which === 13) {
+            setFormValue(e.target.value);
+            sendMessage(e);
+          }
+        }} onChange={(e) => {
+          setFormValue(e.target.value);
+        }} />
         <button type="submit" className='chatview__btn-send' disabled={!formValue}>Send</button>
       </form>
     </div>

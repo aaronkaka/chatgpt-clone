@@ -1,0 +1,290 @@
+$face-height: 160px;
+$face-width: 120px;
+$animation-timer: 10s;
+
+$blue:#03A9F4;
+$purple: #9C27B0;
+$green: #4CAF50;
+$dark-gray: #455A64;
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 500px;
+  height: 500px;
+}
+
+.face-container {
+  width: 200px;
+  height: 240px;
+  position: relative;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #95a5a6;
+  border-radius: 40px;
+}
+
+.bangs-left,
+.bangs-middle,
+.bangs-right {
+  background: -webkit-linear-gradient(-45deg, #050202 1%, #050202 48%, #050202 48%, #13151c 49%, #090911 99%);
+  background: linear-gradient(135deg, #050202 1%, #050202 48%, #050202 48%, #13151c 49%, #090911 99%);
+  width: $face-width/3;
+  position: absolute;
+  z-index: 2;
+  top: 15px;
+}
+
+.bangs-left {
+  height: 60px;
+  border-radius: 30px 0 40px 0;
+  left: 40px;
+}
+
+.bangs-middle {
+  border-radius: 0 0 40px 0;
+  height: 45px;
+  left: 75px;
+}
+
+.bangs-right {
+  height: 40px;
+  left: 110px;
+  border-radius: 0 30px 40px 0;
+}
+
+.hair-left,
+.hair-right {
+  background: #050202;
+  background: -moz-linear-gradient(left, #050202 1%, #050202 48%, #050202 48%, #13151c 49%, #090911 99%);
+  background: -webkit-linear-gradient(left, #050202 1%, #050202 48%, #050202 48%, #13151c 49%, #090911 99%);
+  background: linear-gradient(to right, #050202 1%, #050202 48%, #050202 48%, #13151c 49%, #090911 99%);
+  height: $face-height + 50px;
+  width: $face-height/4;
+  z-index: 1;
+  top: 40px;
+  position: absolute;
+}
+
+.hair-left {
+  border-radius: 50px 0px 0px 80px;
+  left: 10px;
+  transform: skewy(-40deg);
+}
+
+.hair-right {
+  border-radius: 0 50px 80px 0;
+  right: 15px;
+  transform: skewy(40deg);
+}
+
+.face {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f1c27d+1,f1c27d+49,f1c27d+49,edbb76+51,edbb76+100 */
+  background: #f1c27d;
+  /* Old browsers */
+  background: -moz-linear-gradient(left, #f1c27d 1%, #f1c27d 49%, #f1c27d 49%, #edbb76 51%, #edbb76 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, #f1c27d 1%, #f1c27d 49%, #f1c27d 49%, #edbb76 51%, #edbb76 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, #f1c27d 1%, #f1c27d 49%, #f1c27d 49%, #edbb76 51%, #edbb76 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  width: $face-width;
+  height: $face-height;
+  border-radius: 20px 20px 100px 100px;
+  z-index: 0;
+  position: relative;
+}
+.left-eyebrow, .right-eyebrow {
+    width: 30px;
+  height: 5px;
+  position: absolute;
+}
+.left-eyebrow {
+  top:35px;
+  left: 10px;
+  background-color: black;
+  animation: left-eyebrow 1s infinite;
+}
+.right-eyebrow {
+  top:35px;
+  right: 15px;
+  background-color: black;
+   -webkit-transform: skewx(150deg);
+  animation: right-eyebrow 1s infinite;
+}
+.left-eye,
+.right-eye {
+  background-color: #ffffff;
+  width: 30px;
+  height: 10px;
+  position: absolute;
+  top: 50px;
+  animation: blinking 3s infinite;
+}
+
+.left-eye {
+  left: 15px;
+  border-radius: 0 50px 30px 50px;
+}
+
+.right-eye {
+  right: 15px;
+  border-radius: 50px 0 50px 30px;
+}
+
+.pupil {
+  background-color: #c3834c;
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 0;
+  left: 10px;
+  border-radius: 50px;
+  display: inline-block;
+  animation: pupil 2s infinite;
+}
+
+.nose {
+  width: 20px;
+  height: 30px;
+  background: #f1c27d;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f1c27d 0%, #e8ae68 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #f1c27d 0%, #e8ae68 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #f1c27d 0%, #e8ae68 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  position: absolute;
+  top: 70px;
+  left: 50px;
+  border-radius: 0 0 10px 8px;
+}
+
+.lips {
+  animation: talking 2s infinite;
+  width: 40px;
+  height: 20px;
+  position: absolute;
+  bottom: 25px;
+  left: 40px;
+  border-radius: 10px 10px 30px 30px;
+  background-color: #ffffff;
+}
+
+.dialogue {
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.dialogue:after {
+  content: "Hi! If you have any questions, you can find me in the bottom right corner!";
+  padding: 24px;
+  width: 400px;
+  display: inline-block;
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 25px;
+  line-height: 40px;
+  animation: dialogue $animation-timer infinite;
+  background-color: #154c79;
+  border-radius: 16px;
+}
+@-webkit-keyframes dialogue {
+  0% {
+    content: "";
+    background-color: $green;
+    opacity: 1;
+  }
+  
+    10% {
+    content: "Hi! My name is Trang.";
+    background-color: $green;
+    opacity: 1;
+  }
+  25% {
+    opacity:.75;
+    background-color: $blue;
+  }
+  50% {
+    content: "I'm a Front End Web Developer.";
+    background-color: $blue;
+    opacity: 1;
+  }
+  75%{
+    opacity:.75;
+    background-color: $blue;
+  }
+  100% {
+    content: "I also love to design.";
+    background-color: $purple;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes talking {
+  0% {
+    height: 5px;
+  }
+  25% {
+    border-radius: 40px;
+    height: 10px;
+    width: 40px;
+  }
+  50% {
+    border-radius: 10px 10px 30px 30px;
+    height: 20px;
+    width: 40px;
+    background: white;
+  }
+  100% {
+    height: 0;
+  }
+}
+
+@-webkit-keyframes blinking {
+  25% {
+    height: 8px;
+  }
+  50% {
+    height: 10px;
+  }
+  100% {
+    height: 8px;
+  }
+}
+@keyframes pupil {
+  0% {
+    left: 20px;
+  }
+  50%{
+    left: 20px;
+  }
+  100% {
+    left: 10px;
+  }
+}
+@keyframes left-eyebrow {
+  0% {
+    transform: rotate(-5deg);
+    top: 32px;
+  }
+  100% {
+    transform: rotate(0deg);
+    top: 35px;
+  }
+}
+@keyframes right-eyebrow {
+  0% {
+    top: 32px;
+  }
+
+  100% {
+    top: 35px;
+  }
+}

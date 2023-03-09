@@ -7,6 +7,8 @@ import remarkGfm from 'remark-gfm'
 import moment from 'moment'
 import Image from './Image'
 
+import NoTextAvatar from './NoTextAvatar/NoTextAvatar';
+
 /**
  * A chat message component that displays a message with a timestamp and an icon.
  *
@@ -43,7 +45,7 @@ const ChatMessage = (props) => {
 
       <div className="message__pic">
         {
-          ai ? <MdComputer /> : <MdPersonOutline />
+          ai ? <NoTextAvatar /> : <MdPersonOutline />
         }
       </div>
     </div>
