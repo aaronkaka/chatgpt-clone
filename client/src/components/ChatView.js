@@ -26,11 +26,12 @@ const ChatView = () => {
   const diveDeeperSource = DiveDeeperSource().prompt + PearsonSource().sourceText + '\n"""'
   const [diveDeeperHistory, setDiveDeeperHistory] = useState('')
 
+  const quizSource = QuizSource().prompt + PearsonSource().sourceText
+  const [quizHistory, setQuizHistory] = useState('')
+  
   const summarySource = SummarySource().prompt + SummarySource().sourceText
   const [summaryHistory, setSummaryHistory] = useState('')
   const primarySecondarySource = PrimarySecondarySource().prompt + PrimarySecondarySource().sourceText
-  const [quizHistory, setQuizHistory] = useState('')
-  const quizSource = QuizSource().prompt + QuizSource().sourceText
 
   /**
    * Scrolls the chat area to the bottom.
@@ -87,12 +88,12 @@ const ChatView = () => {
         useCasePrompt = diveDeeperPrompt
         break;
       case options[2]:
-        const quizGeneratorPrompt = quizSource + '\n"""\n\nGenerate three questions about the text. The questions should address key ideas and not insignificant details.'
+        const quizGeneratorPrompt = quizSource + '\n"""\n\nGenerate two questions about the text. The questions should address key ideas and not insignificant details.'
         setQuizHistory(quizGeneratorPrompt)
         useCasePrompt = quizGeneratorPrompt
         break;
       case options[3]:
-        const quizMePrompt = quizHistory + '\n\nANSWERS:\n"""' + newMsg + '\n"""\n\nEvaluate each of the three ANSWERS and explain whether it answers the questions above. If an answer is incorrect or incomplete, quote the passage from the text that provides a more correct, complete answer.'
+        const quizMePrompt = quizHistory + '\nANSWERS:\n"""\n' + newMsg + '\n"""\n\nEvaluate each of the three ANSWERS and explain whether it answers the questions above. If an answer is incorrect or incomplete, quote the passage from the text that provides a more correct, complete answer.'
         useCasePrompt = quizMePrompt
         break;
       case options[4]:
