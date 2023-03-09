@@ -6,6 +6,7 @@ import SummarySource from './SummarySource'
 import DiveDeeperSource from './DiveDeeperSource'
 import PrimarySecondarySource from './PrimarySecondarySource'
 import QuizSource from './QuizSource'
+import PearsonSource from './PearsonSource'
 
 /**
  * A chat view component that displays a list of messages and a form for sending new messages.
@@ -21,10 +22,12 @@ const ChatView = () => {
   const options = ['Tell Me More', 'Dive Deeper', 'Quiz Generator', 'Quiz Me', 'Explain it back', 'Another Bite at the Apple', 'Check Your Sources', 'DALL·E']
   const [selected, setSelected] = useState(options[0])
   const [messages, addMessage] = useContext(ChatContext)
+
+  const diveDeeperSource = DiveDeeperSource().prompt + PearsonSource().sourceText + '\n"""'
+  const [diveDeeperHistory, setDiveDeeperHistory] = useState('')
+
   const summarySource = SummarySource().prompt + SummarySource().sourceText
   const [summaryHistory, setSummaryHistory] = useState('')
-  const diveDeeperSource = DiveDeeperSource().prompt + DiveDeeperSource().sourceText + '\n"""'
-  const [diveDeeperHistory, setDiveDeeperHistory] = useState('')
   const primarySecondarySource = PrimarySecondarySource().prompt + PrimarySecondarySource().sourceText
   const [quizHistory, setQuizHistory] = useState('')
   const quizSource = QuizSource().prompt + QuizSource().sourceText
@@ -189,9 +192,12 @@ const ChatView = () => {
 
     switch (selectionValue) {
       case options[0]:
-        updateMessage(`Let’s dive deeper into the material. Please ask me questions about the text you just read.`, true)
+        updateMessage(`Please ask me questions about the text you just read.`, true)
         console.clear()
         console.info(diveDeeperSource)
+        break;
+      case options[1]:
+        updateMessage(`Let’s dive deeper into the material.`, true)
         break;
       case options[2]:
         updateMessage(`Please answer the questions I generate for you about the source text.`, true)

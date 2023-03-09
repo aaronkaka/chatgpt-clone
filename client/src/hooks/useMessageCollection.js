@@ -9,7 +9,7 @@ const useMessageCollection = () => {
   const initialMsg = {
     id: 1,
     createdAt: Date.now(),
-    text: '*** Hello, Andy! Let’s dive deeper into the material. Please ask me questions about the text you just read.',
+    text: '* Hello, Andy! Please ask me questions about the text you just read.',
     ai: true
   }
   const [messages, setMessages] = useState([initialMsg]);
