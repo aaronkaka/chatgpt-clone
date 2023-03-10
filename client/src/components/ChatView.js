@@ -29,8 +29,9 @@ const ChatView = () => {
   const quizSource = QuizSource().prompt + PearsonSource().sourceText
   const [quizHistory, setQuizHistory] = useState('')
   
-  const summarySource = SummarySource().prompt + SummarySource().sourceText
+  const summarySource = SummarySource().prompt + PearsonSource().sourceText
   const [summaryHistory, setSummaryHistory] = useState('')
+
   const primarySecondarySource = PrimarySecondarySource().prompt + PrimarySecondarySource().sourceText
 
   /**
