@@ -32,7 +32,7 @@ const ChatView = () => {
   const summarySource = SummarySource().prompt + PearsonSource().sourceText
   const [summaryHistory, setSummaryHistory] = useState('')
 
-  const primarySecondarySource = PrimarySecondarySource().prompt + PrimarySecondarySource().sourceText
+  const primarySecondarySource = PrimarySecondarySource().prompt + PearsonSource().sourceText + PrimarySecondarySource().sourceText2
 
   /**
    * Scrolls the chat area to the bottom.
@@ -212,7 +212,7 @@ const ChatView = () => {
         console.info(summarySource)
         break;
       case options[6]:
-        updateMessage(`Does the Primary source extend, complicate, or contradict the account in the Secondary source? How?`, true)
+        updateMessage(`Does the Primary source extend, complicate, or contradict the account in the following Secondary source? How?\n\n"${PrimarySecondarySource().text2}"`, true)
         console.clear()
         console.info(primarySecondarySource)
         break;
