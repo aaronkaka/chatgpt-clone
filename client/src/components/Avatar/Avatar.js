@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
 import "./Avatar.scss";
+import genie from '../../assets/genie.png'
 
 const Avatar = (showDialog = true, scale = 1) => {
   scale = 1;
@@ -26,7 +27,8 @@ const Avatar = (showDialog = true, scale = 1) => {
         <div style={{ transform: `scale(${scale})` }}>
           <div className="container">
             <div id="Page1"></div>
-            <div className="face-container">
+            <img src={genie} alt="Pearson" width="100" />
+            {/* <div className="face-container">
               <div className="hair-left"></div>
               <div className="bangs-left"></div>
               <div className="bangs-middle"></div>
@@ -44,7 +46,7 @@ const Avatar = (showDialog = true, scale = 1) => {
                 <div className="lips"></div>
               </div>
               <div className="hair-right"></div>
-            </div>
+            </div> */}
             <div style={{ display: showDialog ? "flex" : "none" }} className="dialogue"></div>
             <button onClick={() => {
               setShow(false);
